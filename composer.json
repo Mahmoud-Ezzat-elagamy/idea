@@ -1,6 +1,6 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/blank-react-starter-kit",
+    "name": "laravel/laravel",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
     "keywords": [
@@ -10,11 +10,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
-        "inertiajs/inertia-laravel": "^3.0",
         "laravel/framework": "^13.17",
         "laravel/mcp": "^0.9.1",
-        "laravel/tinker": "^3.0",
-        "laravel/wayfinder": "^0.1.14"
+        "laravel/tinker": "^3.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.24",
@@ -47,9 +45,7 @@
             "composer install",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
             "@php artisan key:generate",
-            "@php artisan migrate --force",
-            "npm install",
-            "npm run build"
+            "@php artisan migrate --force"
         ],
         "format": [
             "vendor/bin/rector",
@@ -57,7 +53,7 @@
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"npm run dev\" --names='server,queue,vite'"
+            "npx concurrently -c \"#93c5fd,#c4b5fd\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" --names='server,queue'"
         ],
         "lint": [
             "pint --parallel"
@@ -67,9 +63,8 @@
         ],
         "ci:check": [
             "Composer\\Config::disableProcessTimeout",
-            "npm run lint:check",
-            "npm run format:check",
-            "npm run types:check",
+            "@lint:check",
+            "@types:check",
             "@test"
         ],
         "types:check": [
@@ -79,7 +74,7 @@
             "@php artisan config:clear --ansi",
             "@lint:check",
             "@types:check",
-            "@php artisan test"
+            "@php artisan test --compact"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",

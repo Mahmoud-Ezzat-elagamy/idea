@@ -24,11 +24,17 @@ class Idea extends Model
         'status' => IdeaStatus::PENDING,
     ];
 
+    /**
+     * @return BelongsTo<User, $this>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return HasMany<Step, $this>
+     */
     public function steps(): HasMany
     {
         return $this->hasMany(Step::class);

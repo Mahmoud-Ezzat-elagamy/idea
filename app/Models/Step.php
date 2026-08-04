@@ -14,7 +14,9 @@ class Step extends Model
 
     protected $attributes = ['completed' => false];
 
-
+    /**
+     * @return BelongsTo<Idea, $this>
+     */
     public function idea(): BelongsTo
     {
         return $this->belongsTo(Idea::class);
