@@ -1,5 +1,6 @@
 [phases.setup]
 nixPkgs = ["php84", "php84Packages.composer", "nodejs_20"]
 
+
 [phases.install]
-cmds = ["rm -f package-lock.json", "npm install"]
+cmds = ["echo RUNNING_CUSTOM_INSTALL", "rm -f package-lock.json", "npm install"]
