@@ -1,0 +1,8 @@
+{
+    "agents": [
+        "cursor",
+        "opencode"
+    ],
+    "cloud": true,
+    "guidelines": true
+}

@@ -2,11 +2,14 @@
 
 namespace App\Providers;
 
+use App\Mcp\Servers\IdeaServer;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Laravel\Mcp\Facades\Mcp;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,7 +26,20 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Model::unguard();
+        Model::shouldBeStrict();
+        Model::automaticallyEagerLoadRelationships();
+
         $this->configureDefaults();
+        $this->configureMcp();
+    }
+
+    /**
+     * Register the application's MCP servers.
+     */
+    protected function configureMcp(): void
+    {
+        Mcp::local('idea', IdeaServer::class);
     }
 
     /**
