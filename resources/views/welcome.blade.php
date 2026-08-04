@@ -10,7 +10,7 @@
     </head>
     <body class="bg-background text-foreground flex p-6 lg:p-8 items-center justify-center min-h-screen flex-col">
         <div class="max-w-xl w-full mx-auto text-center">
-            <h1 class="text-3xl font-semibold mb-4">Laravel</h1>
+            <h1 class="text-3xl font-semibold mb-4">hi</h1>
             <p class="text-muted-foreground">Welcome to your normal Laravel PHP application with local Tailwind CSS.</p>
         </div>
     </body>
