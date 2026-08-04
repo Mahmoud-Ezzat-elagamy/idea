@@ -2,4 +2,4 @@
 nixPkgs = ["php84", "php84Packages.composer", "nodejs_20"]
 
 [phases.install]
-cmds = ["npm install --no-audit --no-fund"]
+cmds = ["rm -f package-lock.json", "npm install"]
