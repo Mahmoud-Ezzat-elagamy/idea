@@ -6,12 +6,12 @@
         <title>Laravel</title>
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="bg-[#Fdfdfd] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center justify-center min-h-screen flex-col">
+    <body class="bg-background text-foreground flex p-6 lg:p-8 items-center justify-center min-h-screen flex-col">
         <div class="max-w-xl w-full mx-auto text-center">
             <h1 class="text-3xl font-semibold mb-4">Laravel</h1>
-            <p class="text-gray-600 dark:text-gray-400">Welcome to your normal Laravel PHP application.</p>
+            <p class="text-muted-foreground">Welcome to your normal Laravel PHP application with local Tailwind CSS.</p>
         </div>
     </body>
 </html>
