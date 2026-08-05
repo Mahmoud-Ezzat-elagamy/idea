@@ -5,15 +5,33 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreIdeaRequest;
 use App\Http\Requests\UpdateIdeaRequest;
 use App\Models\Idea;
+use Illuminate\Support\Facades\Auth;
 
 class IdeaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): void
+    public function index()
     {
-        //
+        $ideas = Auth::user()
+            ->ideas()
+            ->when(request('status'), fn($query) => $query->where('status', request('status')))
+            ->get();
+
+//        select status,count(*) from ideas group by status
+        $statusCount = Auth::user()
+            ->ideas()
+            ->selectRaw('status, count(*) as count')
+            ->groupBy('status')->pluck('count', 'status')
+            ->put('all', Auth::user()->ideas()->count());
+
+//        dd($statusCount);
+
+        return view('idea.index', [
+            'ideas' => $ideas,
+            'statusCount' => $statusCount,
+        ]);
     }
 
     /**
@@ -37,7 +55,7 @@ class IdeaController extends Controller
      */
     public function show(Idea $idea): void
     {
-        //
+
     }
 
     /**
