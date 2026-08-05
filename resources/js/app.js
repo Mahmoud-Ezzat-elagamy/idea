@@ -1,1 +1,1 @@
-// Application JavaScript
+import './bootstrap.js'

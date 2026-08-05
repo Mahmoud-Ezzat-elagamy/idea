@@ -8,3 +8,4 @@ test('it belongs to a user', function () {
 
     expect($idea->user)->toBeInstanceOf(User::class);
 });
+
