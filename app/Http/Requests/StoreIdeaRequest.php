@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests;
 
+use App\IdeaStatus;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule ;
 
 class StoreIdeaRequest extends FormRequest
 {
@@ -12,7 +16,7 @@ class StoreIdeaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +27,9 @@ class StoreIdeaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => ['required', 'string'],
+            'description' => ['required', 'string'],
+            'status' => ['required', Rule::enum(IdeaStatus::class)]
         ];
     }
 }

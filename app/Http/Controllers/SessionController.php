@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,10 +18,10 @@ class SessionController extends Controller
     {
         $validatedData = $request->validate([
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
         ]);
 
-        if (!Auth::attempt($validatedData)) {
+        if (! Auth::attempt($validatedData)) {
             return back()
                 ->withErrors(['password' => 'We were unable to authenticate using the provided credentials.'])
                 ->withInput();

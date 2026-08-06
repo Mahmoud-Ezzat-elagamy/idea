@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     /*
@@ -97,7 +99,7 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
-    'key' => env('APP_KEY', null),
+    'key' => env('APP_KEY'),
 
     'previous_keys' => [
         ...array_filter(

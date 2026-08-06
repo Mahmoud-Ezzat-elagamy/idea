@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use App\Mcp\Servers\IdeaServer;
@@ -10,12 +12,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Mcp\Facades\Mcp;
+use Override;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
+    #[Override]
     public function register(): void
     {
         //

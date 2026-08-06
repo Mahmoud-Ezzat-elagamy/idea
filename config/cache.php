@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Str;
 
 return [
@@ -41,10 +43,10 @@ return [
 
         'database' => [
             'driver' => 'database',
-            'connection' => env('DB_CACHE_CONNECTION', null),
+            'connection' => env('DB_CACHE_CONNECTION'),
             'table' => env('DB_CACHE_TABLE', 'cache'),
-            'lock_connection' => env('DB_CACHE_LOCK_CONNECTION', null),
-            'lock_table' => env('DB_CACHE_LOCK_TABLE', null),
+            'lock_connection' => env('DB_CACHE_LOCK_CONNECTION'),
+            'lock_table' => env('DB_CACHE_LOCK_TABLE'),
         ],
 
         'file' => [
@@ -55,16 +57,16 @@ return [
 
         'storage' => [
             'driver' => 'storage',
-            'disk' => env('CACHE_STORAGE_DISK', null),
+            'disk' => env('CACHE_STORAGE_DISK'),
             'path' => env('CACHE_STORAGE_PATH', 'framework/cache/data'),
         ],
 
         'memcached' => [
             'driver' => 'memcached',
-            'persistent_id' => env('MEMCACHED_PERSISTENT_ID', null),
+            'persistent_id' => env('MEMCACHED_PERSISTENT_ID'),
             'sasl' => [
-                env('MEMCACHED_USERNAME', null),
-                env('MEMCACHED_PASSWORD', null),
+                env('MEMCACHED_USERNAME'),
+                env('MEMCACHED_PASSWORD'),
             ],
             'options' => [
                 // Memcached::OPT_CONNECT_TIMEOUT => 2000,
@@ -86,11 +88,11 @@ return [
 
         'dynamodb' => [
             'driver' => 'dynamodb',
-            'key' => env('AWS_ACCESS_KEY_ID', null),
-            'secret' => env('AWS_SECRET_ACCESS_KEY', null),
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
             'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
             'table' => env('DYNAMODB_CACHE_TABLE', 'cache'),
-            'endpoint' => env('DYNAMODB_ENDPOINT', null),
+            'endpoint' => env('DYNAMODB_ENDPOINT'),
         ],
 
         'octane' => [

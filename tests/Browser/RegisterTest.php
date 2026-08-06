@@ -12,10 +12,9 @@ it('can register', function () {
 
     $this->assertDatabaseHas('users', [
         'name' => 'John Doe',
-        'email' => 'example@email.com'
+        'email' => 'example@email.com',
     ]);
 });
-
 
 it('request a valid email', function () {
     visit('/register')

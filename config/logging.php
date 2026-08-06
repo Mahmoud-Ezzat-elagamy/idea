@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
@@ -83,7 +85,7 @@ return [
 
         'slack' => [
             'driver' => 'slack',
-            'url' => env('LOG_SLACK_WEBHOOK_URL', null),
+            'url' => env('LOG_SLACK_WEBHOOK_URL'),
             'username' => env('LOG_SLACK_USERNAME', env('APP_NAME', 'Laravel')),
             'emoji' => env('LOG_SLACK_EMOJI', ':boom:'),
             'level' => env('LOG_LEVEL', 'critical'),
@@ -95,10 +97,10 @@ return [
             'level' => env('LOG_LEVEL', 'debug'),
             'handler' => env('LOG_PAPERTRAIL_HANDLER', SyslogUdpHandler::class),
             'handler_with' => [
-                'host' => env('PAPERTRAIL_URL', null),
-                'port' => env('PAPERTRAIL_PORT', null),
+                'host' => env('PAPERTRAIL_URL'),
+                'port' => env('PAPERTRAIL_PORT'),
                 'connectionString' => env('PAPERTRAIL_URL') && env('PAPERTRAIL_PORT')
-                    ? 'tls://'.env('PAPERTRAIL_URL', null).':'.env('PAPERTRAIL_PORT', null)
+                    ? 'tls://'.env('PAPERTRAIL_URL').':'.env('PAPERTRAIL_PORT')
                     : null,
             ],
             'processors' => [PsrLogMessageProcessor::class],
@@ -111,7 +113,7 @@ return [
             'handler_with' => [
                 'stream' => 'php://stderr',
             ],
-            'formatter' => env('LOG_STDERR_FORMATTER', null),
+            'formatter' => env('LOG_STDERR_FORMATTER'),
             'processors' => [PsrLogMessageProcessor::class],
         ],
 

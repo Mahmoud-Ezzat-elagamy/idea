@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Idea;
 use App\Models\User;
 
@@ -8,4 +10,3 @@ test('it belongs to a user', function () {
 
     expect($idea->user)->toBeInstanceOf(User::class);
 });
-

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 enum IdeaStatus: string
@@ -15,5 +17,23 @@ enum IdeaStatus: string
             self::IN_PROGRESS => 'In Progress',
             self::COMPLETED => 'Completed',
         };
+    }
+
+    public static function values(): array
+    {
+        return [
+            self::PENDING->value,
+            self::IN_PROGRESS->value,
+            self::COMPLETED->value,
+        ];
+    }
+
+    public static function valueToLabel(string|self|null $value): string
+    {
+        if ($value instanceof self) {
+            return $value->label();
+        }
+
+        return self::tryFrom((string) $value)?->label() ?? 'Unknown';
     }
 }

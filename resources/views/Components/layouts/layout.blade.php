@@ -16,6 +16,7 @@
     {{ $slot }}
 </main>
 
+{{--    This one to show the message sent with routing or redircting    --}}
 @session('success')
 <div
     x-data="{show: true}"

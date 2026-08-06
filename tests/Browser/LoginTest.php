@@ -4,7 +4,7 @@ use App\Models\User;
 
 it('can login', function () {
     $user = User::factory()->create([
-        'password' => Hash::make('password123')
+        'password' => Hash::make('password123'),
     ]);
     visit('/login')
         ->fill('email', $user->email)
@@ -16,16 +16,16 @@ it('can login', function () {
 });
 
 it('logs out user', function () {
-//    create the user
+    //    create the user
     $user = User::factory()->create();
 
-//    login the user
+    //    login the user
     //    Auth::login($user);
     $this->actingAs($user);
 
-//    click the logout button
+    //    click the logout button
     visit('/')->click('@logout');
 
-//    expect the current state to be Guest
+    //    expect the current state to be Guest
     $this->assertGuest();
 });

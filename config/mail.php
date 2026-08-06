@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     /*
@@ -39,12 +41,12 @@ return [
 
         'smtp' => [
             'transport' => 'smtp',
-            'scheme' => env('MAIL_SCHEME', null),
-            'url' => env('MAIL_URL', null),
+            'scheme' => env('MAIL_SCHEME'),
+            'url' => env('MAIL_URL'),
             'host' => env('MAIL_HOST', '127.0.0.1'),
             'port' => env('MAIL_PORT', 2525),
-            'username' => env('MAIL_USERNAME', null),
-            'password' => env('MAIL_PASSWORD', null),
+            'username' => env('MAIL_USERNAME'),
+            'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url((string) env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
         ],
@@ -72,7 +74,7 @@ return [
 
         'log' => [
             'transport' => 'log',
-            'channel' => env('MAIL_LOG_CHANNEL', null),
+            'channel' => env('MAIL_LOG_CHANNEL'),
         ],
 
         'array' => [
