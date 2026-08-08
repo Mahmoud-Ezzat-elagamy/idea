@@ -8,7 +8,7 @@
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-background text-foreground">
+<body class="bg-background text-foreground min-h-screen">
 
 <x-layouts.nav />
 
@@ -16,15 +16,34 @@
     {{ $slot }}
 </main>
 
-{{--    This one to show the message sent with routing or redircting    --}}
-@session('success')
-<div
-    x-data="{show: true}"
-    x-init="setTimeout(()=> show = false, 3000)"
-    x-show="show"
-    x-transition.opacity.duration.300ms
-    class="bg-primary px-4 py-3 absolute bottom-4 right-4 rounded-lg">{{$value}}</div>
-@endsession
+{{-- Toast Messages --}}
+<div class="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
+    @session('success')
+    <div
+        x-data="{ show: true }"
+        x-init="setTimeout(() => show = false, 3000)"
+        x-show="show"
+        x-transition:leave="transition ease-in duration-300"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        class="rounded-lg bg-emerald-600 px-4 py-3 text-white shadow-xl">
+        {{ $value }}
+    </div>
+    @endsession
+
+    @error('error')
+    <div
+        x-data="{ show: true }"
+        x-init="setTimeout(() => show = false, 3000)"
+        x-show="show"
+        x-transition:leave="transition ease-in duration-300"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        class="rounded-lg bg-red-600 px-4 py-3 text-white shadow-xl">
+        {{ $message }}
+    </div>
+    @enderror
+</div>
 
 </body>
 </html>

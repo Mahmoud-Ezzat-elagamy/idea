@@ -10,7 +10,7 @@ it('can login', function () {
         ->fill('email', $user->email)
         ->fill('password', 'password123')
         ->click('@login')
-        ->assertpathIs('/');
+        ->assertpathIs('/ideas');
 
     $this->assertAuthenticated();
 });

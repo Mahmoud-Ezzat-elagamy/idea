@@ -5,17 +5,19 @@
         <p class="text-muted-foreground text-sm mt-2">Capture your thoughts. Make a plan.</p>
     </header>
 
-{{--    Create a new idea               --}}
+    {{--    Create a new idea               --}}
     <x-card
         x-data
         {{--            $dispatch(eventName,     eventDetails   --}}
         @click="$dispatch('open-modal', 'create-idea')"
         is="button"
-        class="w-full h-32 text-left mb-8">
+        class="w-full h-32 text-left mb-8"
+        data-test="create-idea-button"
+    >
         What is the idea?
     </x-card>
 
-        {{--    Filtering               --}}
+    {{--    Filtering               --}}
     <div>
         <a href="/ideas" class="btn {{ request()->has('status') ? 'btn-outlined' : '' }}">All
             <span>{{ $statusCount['all'] }}</span></a>
@@ -53,8 +55,17 @@
         </div>
         {{--        out modal for idea       --}}
         <x-modal name="create-idea" title="Create Idea">
-            <form x-data="{ ideaStatus: @js(IdeaStatus::cases()[0]->value) }" action="{{route('idea.store')}}"
-                  method="post">
+            <form
+                x-data="{
+                ideaStatus: 'pending',
+                newLink: '',
+                links: [],
+                newStep: '',
+                steps: []
+                }"
+                action="{{route('idea.store')}}"
+                method="post"
+            >
                 @csrf
                 <input type="hidden" name="status" x-model="ideaStatus">
 
@@ -75,6 +86,7 @@
                                     type="button"
                                     @click="ideaStatus = @js($status->value)"
                                     class="btn flex-1 h-10"
+                                    data-test="button-status-{{$status->value}}"
                                     :class="{'btn-outlined': @js($status->value) !== ideaStatus}"
                                 >{{$status->label()}}</button>
                             @endforeach
@@ -91,9 +103,88 @@
                         placeholder="Enter a title for you idea"
                         autofocus
                     />
+
+{{--Steps--}}
+                    <fieldset class="space-y-3">
+                        <strong class="inline-block">Steps</strong>
+                        <template x-for="( step, index ) in steps">
+                            <div class="flex items-center">
+                                <input class="input flex-1" x-model="step" name="steps[]">
+                                <button
+                                    @click="steps.splice(index, 1)"
+                                    type="button"
+                                    aria-label="Remove Step"
+                                    class="w-10 flex items-center justify-center"
+                                >
+                                    <x-icons.close class="text-white" />
+                                </button>
+                            </div>
+                        </template>
+                        <div class="flex items-center">
+                            <input
+                                type="text"
+                                placeholder="What you need to be done"
+                                class="flex-1 input"
+                                spellcheck="false"
+                                x-model="newStep"
+                                data-test="add-step-input"
+                            >
+                            <button
+                                @click="steps.push(newStep.trim()); newStep= '';"
+                                :disabled="newStep.trim().length === 0"
+                                type="button"
+                                aria-label="Add a new step"
+                                class="w-10 flex items-center justify-center"
+                                data-test="add-step-button"
+                            >
+                                <x-icons.close class="rotate-45 text-white" />
+                            </button>
+                        </div>
+                    </fieldset>
+
+{{--Links--}}
+                    <fieldset class="space-y-3">
+                        <label class="inline-block">Links</label>
+                        <template x-for="( link, index ) in links">
+                            <div class="flex items-center">
+                                <input class="input flex-1" x-model="link" name="links[]">
+                                <button
+                                    @click="links.splice(index, 1)"
+                                    type="button"
+                                    aria-label="Remove link"
+                                    class="w-10 flex items-center justify-center"
+                                >
+                                    <x-icons.close class="text-white" />
+                                </button>
+                            </div>
+                        </template>
+                        <div class="flex items-center">
+                            <input
+                                type="url"
+                                placeholder="http://example.com"
+                                class="flex-1 input"
+                                spellcheck="false"
+                                x-model="newLink"
+                                autocomplete="url"
+                                data-test="add-link-input"
+                            >
+                            <button
+                                @click="links.push(newLink.trim()); newLink= '';"
+                                :disabled="newLink.trim().length === 0"
+                                type="button"
+                                aria-label="Add a new link"
+                                class="w-10 flex items-center justify-center"
+                                data-test="add-link-button"
+                            >
+                                <x-icons.close class="rotate-45 text-white" />
+                            </button>
+                        </div>
+                    </fieldset>
+
                     <div class="flex justify-end gap-x-5">
                         <button type="button"
-                        @click="$dispatch('close-modal')">Cancel</button>
+                                @click="$dispatch('close-modal')">Cancel
+                        </button>
                         <button class="btn" type="submit">Create</button>
                     </div>
                 </div>
