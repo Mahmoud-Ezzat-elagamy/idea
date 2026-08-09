@@ -28,10 +28,13 @@ class StoreIdeaRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string'],
-            'description' => ['string', 'required'],
+            'description' => ['string', 'nullable'],
             'status' => ['required', Rule::enum(IdeaStatus::class)],
             'links' => ['nullable', 'array'],
-            'links.*' => ['url'],
+            'links.*' => ['nullable', 'url'],
+            'steps' => ['nullable', 'array'],
+            'steps.*' => ['nullable', 'string'],
+            'image' => ['nullable', 'file', 'max:5120'],
         ];
     }
 }

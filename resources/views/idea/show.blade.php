@@ -11,7 +11,9 @@
             </a>
 
             <div class="flex items-center justify-between">
-                <button class="btn btn-outlined">
+                <button class="btn btn-outlined"
+                        @click= "$dispatch('open-modal', 'edit-idea')"
+                >
                     <x-icons.external />
                     Edit Idea
                 </button>
@@ -25,24 +27,58 @@
                 </form>
             </div>
         </div>
+
         {{--header, status bar, description, links--}}
-        <div class="">
+        <div class="space-y-6">
+
+            @if($idea->image_path)
+                <div class="overflow-hidden rounded-lg">
+
+                    <img src="{{ asset('storage/' .$idea->image_path) }}"
+                         alt="image"
+                         class="w-full h-auto object-cover" />
+                </div>
+
+            @endif
+
             <h1 class="font-bold text-4xl">{{ $title }}</h1>
 
-            <div class="mt-2 flex gap-x-3 items-center">
+            <div class="flex gap-x-3 items-center">
                 <x-idea.status-label
                     status="{{ $idea->status->value }}">{{ $idea->status->label() }}</x-idea.status-label>
 
                 <div class="text-muted-foreground text-sm"> {{ $idea->created_at->diffForHumans() }}</div>
             </div>
 
-            <x-card is="div" class="mt-6">
+            <x-card is="div">
                 <div class="text-foreground">
                     {{ $description }}
                 </div>
             </x-card>
 
-            @if($idea->links)
+            @if($idea->steps->count())
+                <div class="space-y-3">
+                    <h3 class="text-2xl font-bold">Steps</h3>
+                    @foreach($idea->steps as $step)
+                        <form
+                            action="{{route('step.update', $step)}}"
+                            method="post">
+                            @csrf
+                            @method('PATCH')
+                            <x-card class="flex items-center gap-x-3">
+                                <button
+                                    class="size-5 rounded-md items-center flex justify-center border border-primary  text-primary-foreground font-bold {{$step->completed ? 'bg-primary': ''}}">
+                                    @if($step->completed)
+                                        &check;
+                                    @endif
+                                </button>
+                                <span>{{$step->description}}</span>
+                            </x-card>
+                        </form>
+                    @endforeach
+                </div>
+            @endif
+            @if($idea->links->count())
                 <div class="mt-6">
                     <h3 class="text-2xl font-bold">Links</h3>
                     <div class="space-y-3 mt-3">
@@ -55,5 +91,9 @@
                 </div>
             @endif
         </div>
+{{--        <x-ideaForm--}}
+{{--            name="edit-idea"--}}
+{{--            title="Edit Idea"--}}
+{{--        />--}}
     </div>
 </x-layouts.layout>

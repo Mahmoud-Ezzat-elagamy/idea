@@ -1,12 +1,11 @@
 <?php
 
-
-use App\Models\Idea;
 use App\Models\User;
 
 it('can create idea', closure: function () {
     $this->actingAs($user = User::factory()->create());
-    visit(route('idea.index'))
+
+    visit('/ideas')
         ->click('@create-idea-button')
         ->fill('title', 'Create idea')
         ->click('@button-status-completed')
@@ -18,20 +17,12 @@ it('can create idea', closure: function () {
         ->click('Create')
         ->assertPathIs('/ideas');
 
-    $idea = $user->refresh()->ideas()->first();
+    $idea = $user->ideas()->first();
 
-    expect([
-        'title' => $idea->title,
-        'description' => $idea->description,
-        'status' => $idea->status->value, // Extract the backing string ('completed')
-        'links' => $idea->links->toArray(), // Convert ArrayObject to a primitive array
-    ])->toBe([
+    expect($idea)->toMatchArray([
         'title' => 'Create idea',
         'description' => 'Idea created description',
         'status' => 'completed',
-        'links' => [
-            'https://example.com',
-            'https://example2.com',
-        ],
+        'links' => ['https://example.com', 'https://example2.com'],
     ]);
 });

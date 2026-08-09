@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\CreateIdea;
 use App\Http\Requests\StoreIdeaRequest;
 use App\Http\Requests\UpdateIdeaRequest;
 use App\IdeaStatus;
 use App\Models\Idea;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class IdeaController extends Controller
 {
@@ -52,11 +53,12 @@ class IdeaController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     *
+     * @throws \Throwable
      */
-    public function store(StoreIdeaRequest $request, User $user)
+    public function store(StoreIdeaRequest $request, CreateIdea $action)
     {
-        //        dd(request()->all());
-        Auth::user()->ideas()->create($request->validated());
+        $action->handle($request->safe());
 
         return to_route('idea.index')
             ->with('success', 'Idea was created.');
@@ -65,6 +67,8 @@ class IdeaController extends Controller
     //    this automatically get the intended idea using the id in the url
     public function show(Idea $idea)
     {
+        Gate::authorize('workWith', $idea);
+
         return view('idea.show', [
             'idea' => $idea,
         ]);
@@ -75,6 +79,7 @@ class IdeaController extends Controller
      */
     public function edit(Idea $idea): void
     {
+        Gate::authorize('workWith', $idea);
         //
     }
 
@@ -83,6 +88,7 @@ class IdeaController extends Controller
      */
     public function update(UpdateIdeaRequest $request, Idea $idea): void
     {
+        Gate::authorize('workWith', $idea);
         //
     }
 
@@ -91,7 +97,7 @@ class IdeaController extends Controller
      */
     public function destroy(Idea $idea)
     {
-        //        autherize that the user is allowed to delete
+        Gate::authorize('workWith', $idea);
 
         $idea->delete();
 
