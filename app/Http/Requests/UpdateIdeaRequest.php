@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\IdeaStatus;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateIdeaRequest extends FormRequest
 {
@@ -14,7 +16,7 @@ class UpdateIdeaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,7 +27,15 @@ class UpdateIdeaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => ['required', 'string'],
+            'description' => ['string', 'nullable'],
+            'status' => ['required', Rule::enum(IdeaStatus::class)],
+            'links' => ['nullable', 'array'],
+            'links.*' => ['nullable', 'url'],
+            'steps' => ['nullable', 'array'],
+            'steps.*.description' => ['nullable', 'string'],
+            'steps.*.completed' => ['boolean'],
+            'image' => ['nullable', 'image', 'max:5120'],
         ];
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Actions\CreateIdea;
+use App\Actions\UpdateIdea;
 use App\Http\Requests\StoreIdeaRequest;
 use App\Http\Requests\UpdateIdeaRequest;
 use App\IdeaStatus;
@@ -12,6 +13,8 @@ use App\Models\Idea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
+use Throwable;
 
 class IdeaController extends Controller
 {
@@ -54,7 +57,7 @@ class IdeaController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function store(StoreIdeaRequest $request, CreateIdea $action)
     {
@@ -85,11 +88,17 @@ class IdeaController extends Controller
 
     /**
      * Update the specified resource in storage.
+     *
+     * @throws Throwable
      */
-    public function update(UpdateIdeaRequest $request, Idea $idea): void
+    public function update(UpdateIdeaRequest $request, Idea $idea, UpdateIdea $action)
     {
+
         Gate::authorize('workWith', $idea);
-        //
+
+        $action->handle($request->safe()->all(), $idea);
+
+        return back()->with('success', 'Idea was updated.');
     }
 
     /**
@@ -102,5 +111,15 @@ class IdeaController extends Controller
         $idea->delete();
 
         return to_route('idea.index');
+    }
+
+    public function destroyImage(Idea $idea)
+    {
+        Gate::authorize('workWith', $idea);
+        Storage::disk('public')->delete($idea->image_path);
+
+        $idea->update(['image_path' => null]);
+
+        return back();
     }
 }

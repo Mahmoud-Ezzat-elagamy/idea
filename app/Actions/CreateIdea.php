@@ -7,13 +7,14 @@ namespace App\Actions;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class CreateIdea
 {
     /**
-     * @throws \Throwable
+     * @throws Throwable
      */
-    public function handle($attributes, ?User $user = null): void
+    public function handle(array $attributes, ?User $user = null): void
     {
         //        if there is no assume that the user is the authenticated one
         $user ??= Auth::user();
@@ -24,9 +25,8 @@ class CreateIdea
             $image_path = $attributes['image']->store('ideas', 'public');
             $ideaData['image_path'] = $image_path;
         }
-
         $stepsData = collect($attributes->steps)->map(fn ($step) => [
-            'description' => $step,
+            'description' => $step['description'],
         ]) ?? [];
 
         //        acting with the database

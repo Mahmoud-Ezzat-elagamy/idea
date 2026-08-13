@@ -1,6 +1,4 @@
-@php
-    ['title' => $title, 'description' => $description, 'links'=>$links] = $idea->attributesToArray();
-@endphp
+@props(['idea'])
 
 <x-layouts.layout>
     <div class="py-8 max-w-4xl mx-auto">
@@ -12,7 +10,9 @@
 
             <div class="flex items-center justify-between">
                 <button class="btn btn-outlined"
-                        @click= "$dispatch('open-modal', 'edit-idea')"
+                        x-data
+                        @click="$dispatch('open-modal', 'edit-idea')"
+                        data-test="edit-idea-button"
                 >
                     <x-icons.external />
                     Edit Idea
@@ -38,10 +38,9 @@
                          alt="image"
                          class="w-full h-auto object-cover" />
                 </div>
-
             @endif
 
-            <h1 class="font-bold text-4xl">{{ $title }}</h1>
+            <h1 class="font-bold text-4xl">{{ $idea->title }}</h1>
 
             <div class="flex gap-x-3 items-center">
                 <x-idea.status-label
@@ -50,11 +49,13 @@
                 <div class="text-muted-foreground text-sm"> {{ $idea->created_at->diffForHumans() }}</div>
             </div>
 
-            <x-card is="div">
-                <div class="text-foreground">
-                    {{ $description }}
-                </div>
-            </x-card>
+            @if($idea->description)
+                <x-card is="div">
+                    <div class="text-foreground">
+                        {{ $idea->description }}
+                    </div>
+                </x-card>
+            @endif
 
             @if($idea->steps->count())
                 <div class="space-y-3">
@@ -78,6 +79,7 @@
                     @endforeach
                 </div>
             @endif
+
             @if($idea->links->count())
                 <div class="mt-6">
                     <h3 class="text-2xl font-bold">Links</h3>
@@ -91,9 +93,10 @@
                 </div>
             @endif
         </div>
-{{--        <x-ideaForm--}}
-{{--            name="edit-idea"--}}
-{{--            title="Edit Idea"--}}
-{{--        />--}}
+        <x-ideaForm
+            name="edit-idea"
+            title="Edit Idea"
+            :idea="$idea"
+        />
     </div>
 </x-layouts.layout>

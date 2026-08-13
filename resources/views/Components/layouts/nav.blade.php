@@ -6,6 +6,7 @@
 
         <div class="flex gap-4">
             @auth
+                <a href="{{ route('profile.edit') }}" class=" btn btn-outlined">Edit profile</a>
                 <form action="/logout" method="post">
                     @csrf
                     @method('DELETE')
