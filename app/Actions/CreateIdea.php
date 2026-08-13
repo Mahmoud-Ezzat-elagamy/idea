@@ -16,26 +16,23 @@ class CreateIdea
      */
     public function handle(array $attributes, ?User $user = null): void
     {
-        //        if there is no assume that the user is the authenticated one
         $user ??= Auth::user();
 
-        //        Idea data + image
-        $ideaData = $attributes->except(['steps', 'image']);
-        if ($attributes->image) {
+        $ideaData = collect($attributes)->except(['steps', 'image'])->toArray();
+        if (isset($attributes['image']) && $attributes['image']) {
             $image_path = $attributes['image']->store('ideas', 'public');
             $ideaData['image_path'] = $image_path;
         }
-        $stepsData = collect($attributes->steps)->map(fn ($step) => [
-            'description' => $step['description'],
-        ]) ?? [];
 
-        //        acting with the database
-        DB::transaction(function () use ($stepsData, $ideaData) {
-            $idea = Auth::user()->ideas()->create($ideaData); // add idea
-            if ($stepsData) { // add steps
+        $stepsData = collect($attributes['steps'] ?? [])->map(fn ($step) => [
+            'description' => $step['description'],
+        ])->toArray();
+
+        DB::transaction(function () use ($stepsData, $ideaData, $user) {
+            $idea = $user->ideas()->create($ideaData);
+            if ($stepsData) {
                 $idea->steps()->createMany($stepsData);
             }
         });
-
     }
 }
