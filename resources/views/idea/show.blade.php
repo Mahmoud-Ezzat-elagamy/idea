@@ -51,8 +51,8 @@
 
             @if($idea->description)
                 <x-card is="div">
-                    <div class="text-foreground">
-                        {{ $idea->description }}
+                    <div class="text-foreground prose prose-invert">
+                        {!! $idea->formattedDescription !!}
                     </div>
                 </x-card>
             @endif
