@@ -47,6 +47,6 @@ class Idea extends Model
 
     public function formattedDescription(): Attribute
     {
-        return Attribute::get(fn ($value, $attributes) => $attributes['description']);
+        return Attribute::get(fn ($value, $attributes) => str($attributes['description'])->markdown());
     }
 }
